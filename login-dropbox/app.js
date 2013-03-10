@@ -195,10 +195,10 @@ app.get('/test/get', ensureAuthenticated, function(req, res){
 	if (err) return console.log(err);
 	// res.data = data;
 	console.log(data);
-
+	// var dataJson = JSON.stringify(data);
 	res.body = data;
 	res.send(data);
-	res.writeHead(200, {'Content-Type': 'application/javascript', 'Access-Control-Allow-Origin':'*'});
+	res.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin':'*'});
 	res.status(200);
 	// res.writeHead(200, {'Content-Type': 'text/html'});
 	// res.status(200);
