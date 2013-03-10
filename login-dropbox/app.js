@@ -184,25 +184,34 @@ app.get('/test/send', ensureAuthenticated, function(req, res){
 });
 
 app.get('/test/get', ensureAuthenticated, function(req, res){
-    console.log('GET /')
+    console.log('GET /');
     // if( req.isAuthenticated())
     // 	console.log('AUTHENTICATED');
     // else
     // 	console.log('NOT AUTHENTICATED');
 	// res.redirect('/login');
     
-    file = dropbox.getFile('/testfact.js', function(err, data){
+    dropbox.getFile('/testfact.js', function(err, data){
 	if (err) return console.log(err);
-	res.data = data;
+	// res.data = data;
+	console.log(data);
+
+	res.body = data;
+	res.send(data);
+	res.writeHead(200, {'Content-Type': 'application/javascript', 'Access-Control-Allow-Origin':'*'});
+	res.status(200);
+	// res.writeHead(200, {'Content-Type': 'text/html'});
+	// res.status(200);
+	res.end(data);
 	
     });
+    // console.log('get finished');
+    // res.send(file);
+    // console.log(file);
+    // res.writeHead(200, {'Content-Type': 'text/html'});
+    // res.status(200);
     
-    res.send(file);
-    // var html = fs.readFileSync('index.html');
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.status(200);
-    
-    res.end();
+    // res.end();
 });
 
 // app.get('/test/get', ensureAuthenticated, function(req, res){
