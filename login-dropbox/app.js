@@ -182,29 +182,45 @@ app.get('/test/send', ensureAuthenticated, function(req, res){
     res.redirect(HOME_PAGE);
     console.log('test2');
 });
+app.get('/test/get', function(req, res){
+    console.log("Will attempt to read /testfact.js");
+    if( !req.isAuthenticated()) {
+        console.log("Not authenticated, this could fail...");
+    }
 
+    dropbox.getFile('/testfact.js', function(err, data){
+        if (err) {
+            console.log("No connected to dropbox. Can't read testfact.js!!!");
+        }
+        if (err) return console.log(err);
+
+        // console.log("Here's what's in testfact.js: " + data);
+        res.body = data;
+        res.writeHead(200, {'Content-Type': 'text/plain; charset=UTF-8', 'Access-Control-Allow-Origin':'*'});
+        res.status(200);
+        res.end(data);
+
+    });
+});
+
+/*
 app.get('/test/get', ensureAuthenticated, function(req, res){
     console.log('GET /');
-    // if( req.isAuthenticated())
-    // 	console.log('AUTHENTICATED');
-    // else
-    // 	console.log('NOT AUTHENTICATED');
-	// res.redirect('/login');
     
     dropbox.getFile('/testfact.js', function(err, data){
 	if (err) return console.log(err);
 	// res.data = data;
 	console.log(data);
-	// var dataJson = JSON.stringify(data);
 	res.body = data;
-	res.send(data);
-	res.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin':'*'});
-	res.status(200);
-	// res.writeHead(200, {'Content-Type': 'text/html'});
-	// res.status(200);
-	res.end(data);
+	res.set('Content-type', 'test/plain');
+	res.send(new Buffer('some text'));
+	// res.writeHead(200, {'Content-Type': 'application/json; charset=UTF-8', 'Access-Control-Allow-Origin':'*'});
+
+
 	
     });
+    res.status(200);
+    res.end();
     // console.log('get finished');
     // res.send(file);
     // console.log(file);
@@ -212,7 +228,7 @@ app.get('/test/get', ensureAuthenticated, function(req, res){
     // res.status(200);
     
     // res.end();
-});
+});*/
 
 // app.get('/test/get', ensureAuthenticated, function(req, res){
     // console.log('dans get');
